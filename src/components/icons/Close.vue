@@ -1,0 +1,14 @@
+<template>
+    <div>
+        <svg width="20" height="20" fill="var(--primary-color)" stroke="#ffffff" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12c0-4.969-4.031-9-9-9s-9 4.031-9 9 4.031 9 9 9 9-4.031 9-9Z"></path>
+            <path d="M15 15 9 9"></path>
+            <path d="m9 15 6-6"></path>
+        </svg>
+    </div>
+</template>
+
+<script setup>
+
+</script>
