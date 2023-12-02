@@ -24,7 +24,7 @@
                 <div v-show="isInputFocused || selectedIngredients.length"
                     class="w-3/5 px-5 py-3 min-h-[2.5rem] bg-white rounded-md">
                     <span v-if="!selectedIngredients.length">No Ingredients Selected</span>
-                    <div v-else class="flex flex-wrap gap-2">
+                    <TransitionGroup name="list" v-else class="flex flex-wrap gap-2" tag="div">
                         <div v-for="ingredient in selectedIngredients" :key="ingredient"
                             @click="selectedIngredients = selectedIngredients.filter(item => item !== ingredient)"
                             class="text-white cursor-pointer bg-primary relative px-3 py-1 rounded-md">
@@ -33,7 +33,7 @@
                                 <svgClose />
                             </span>
                         </div>
-                    </div>
+                    </TransitionGroup>
                 </div>
             </transition>
             <transition name="result">
@@ -126,5 +126,24 @@ const ingrdientTaverse = (e) => {
 .result-enter-from,
 .result-leave-to {
     opacity: 0;
+}
+
+.list-move,
+/* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+    position: absolute;
 }
 </style>
