@@ -1,10 +1,12 @@
 <template>
-    <main>
-        Recipes
-    </main>
+    <div>
+
+    </div>
 </template>
 
 <script setup>
+
+const recipeList = ref([])
 
 </script>
 
