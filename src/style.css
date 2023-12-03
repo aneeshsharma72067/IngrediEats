@@ -16,6 +16,7 @@ body {
   font-family: Lato;
   background: var(--light-color);
   overflow-x: hidden;
+  min-height: 150vh;
 }
 
 ::-webkit-scrollbar {

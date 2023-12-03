@@ -38,7 +38,7 @@
             </transition>
             <transition name="result">
                 <div v-show="isInputFocused || searchQuery.length" id="ingredientContainer"
-                    class="w-3/5 max-h-44 overflow-y-scroll rounded-lg bg-white duration-[3s]" :ref="containerRef">
+                    class="w-3/5 max-h-44 overflow-y-scroll rounded-lg bg-white duration-[3s]">
                     <div v-for="ingredient in filteredIngredients" :key="ingredient"
                         class="px-4 py-2 text-lg min-h-[2.5rem] text-slate-700 duration-300 hover:bg-neutral-300 cursor-pointer"
                         @click="!selectedIngredients.includes(ingredient) && selectedIngredients.push(ingredient), ingInput.focus()"
@@ -58,7 +58,6 @@ import { computed, ref } from "vue";
 const searchQuery = ref("");
 const isInputFocused = ref(false);
 const currentIndex = ref(0)
-const containerRef = ref(null)
 const selectedIngredients = ref([])
 const ingInput = ref(null)
 
@@ -129,7 +128,6 @@ const ingrdientTaverse = (e) => {
 }
 
 .list-move,
-/* apply transition to moving elements */
 .list-enter-active,
 .list-leave-active {
     transition: all 0.5s ease;
@@ -141,8 +139,6 @@ const ingrdientTaverse = (e) => {
     transform: translateX(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
     position: absolute;
 }
