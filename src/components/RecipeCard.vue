@@ -11,13 +11,21 @@
         </div>
         <div class="">
             <span class="font-semibold text-primary">Ingredients &nbsp;</span>-
-            Salmon, Chicken, Butter, Cheese
+            {{ ingredients.slice(0, 40) + '...' }}
         </div>
     </div>
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+
 const props = defineProps(['recipe']);
+
+const ingredients = ref("");
+onMounted(() => {
+    ingredients.value = props.recipe.ingredients.join(', ')
+})
+
 </script>
 
 <style scoped>
