@@ -16,7 +16,7 @@
                 <input type="text"
                     class="px-5 py-3 w-full focus:shadow-[0_0_2px_3px_rgb(255,132,0)] duration-300 rounded-lg text-lg outline-none border-none text-slate-800"
                     placeholder="Enter ingredients" v-model="searchQuery" @focus="isInputFocused = true"
-                    @blur="isInputFocused = false, currentIndex = 0" @keydown="ingrdientTaverse" ref="ingInput" />
+                    @blur="isInputFocused = false, currentIndex = 0" @input="updateFilteredIngredients" ref="ingInput" />
                 <router-link to="/"
                     class="px-5 py-3 text-white bg-primary rounded-md text-lg duration-300 hover:bg-secondary">Search</router-link>
             </div>
@@ -39,6 +39,9 @@
             <transition name="result">
                 <div v-show="isInputFocused || searchQuery.length" id="ingredientContainer"
                     class="w-3/5 max-h-44 overflow-y-scroll rounded-lg bg-white duration-[3s]">
+                    <!-- <div v-if="!filteredIngredients.length"
+                        class="px-4 py-2 text-lg min-h-[2.5rem] text-slate-700 duration-300 hover:bg-neutral-300 cursor-pointer">
+                        Loading...</div> -->
                     <div v-for="ingredient in filteredIngredients" :key="ingredient"
                         class="px-4 py-2 text-lg min-h-[2.5rem] text-slate-700 duration-300 hover:bg-neutral-300 cursor-pointer"
                         @click="!selectedIngredients.includes(ingredient) && selectedIngredients.push(ingredient), ingInput.focus()"
@@ -52,8 +55,9 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import svgClose from './icons/close.vue'
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const searchQuery = ref("");
 const isInputFocused = ref(false);
@@ -61,24 +65,9 @@ const currentIndex = ref(0)
 const selectedIngredients = ref([])
 const ingInput = ref(null)
 
-const ingredients = [
-    "Salmon",
-    "Egg",
-    "Milk",
-    "Chicken",
-    "Rice",
-    "Green Pepper",
-    "Red Chilli",
-    "Carrot",
-];
+const ingredients = ref([])
 
-const filteredIngredients = computed(() =>
-    ingredients.filter((item) =>
-        item.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-
-);
-
+const filteredIngredients = ref([])
 const ingrdientTaverse = (e) => {
     const container = document.getElementById('ingredientContainer')
     if (e.key === 'ArrowDown') {
@@ -87,12 +76,30 @@ const ingrdientTaverse = (e) => {
     else if (e.key === 'ArrowUp') {
         currentIndex.value = currentIndex.value <= 0 ? 0 : currentIndex.value - 1
     }
-    container.children[currentIndex.value - 1].scrollIntoView({
+    const targetElement = container.children[currentIndex.value - 1];
+    targetElement.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
     });
+};
+
+const updateFilteredIngredients = () => {
+
+    filteredIngredients.value = ingredients.value.filter((item) =>
+        item.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
 }
 
+const fetchAllIngredients = async () => {
+    await axios.get('/api/ingredients').then(res => {
+        console.log(res.data.ingredients);
+        ingredients.value = res.data.ingredients
+        updateFilteredIngredients()
+    }).catch(err => {
+        console.log(err);
+    })
+}
+fetchAllIngredients();
 </script>
 <style scoped>
 .radial-gradient-ellipse {
