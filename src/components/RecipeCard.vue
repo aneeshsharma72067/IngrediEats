@@ -23,16 +23,9 @@ const props = defineProps(['recipe']);
 
 const ingredients = ref("");
 onMounted(() => {
-    ingredients.value = props.recipe.ingredients.join(', ')
-})
+    ingredients.value = props.recipe.ingredients.join(', ');
+});
 
 </script>
 
-<style scoped>
-.neuromorphism {
-    border-radius: 25px;
-    background: white;
-    box-shadow: 10px 10px 20px #cacaca,
-        -10px -10px 20px #f6f6f6;
-}
-</style>
+<style scoped></style>

@@ -12,6 +12,11 @@
   src: url("/fonts/Lato-Regular.ttf");
 }
 
+@font-face {
+  font-family: "Gumela";
+  src: url("/fonts/Gumela-Regular.ttf");
+}
+
 body {
   font-family: Lato;
   background: var(--light-color);
@@ -27,4 +32,13 @@ body {
   background: var(--primary-color);
   border-radius: 10px;
   border: 2px solid var(--light-color);
+}
+.neuromorphism {
+  border-radius: 25px;
+  background: white;
+  box-shadow: 10px 10px 20px #cacaca, -10px -10px 20px #f6f6f6;
+}
+
+.font-gumela {
+  font-family: "Gumela";
 }

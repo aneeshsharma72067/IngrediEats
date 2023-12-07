@@ -17,8 +17,8 @@
                     class="px-5 py-3 w-full focus:shadow-[0_0_2px_3px_rgb(255,132,0)] duration-300 rounded-lg text-lg outline-none border-none text-slate-800"
                     placeholder="Enter ingredients" v-model="searchQuery" @focus="isInputFocused = true"
                     @blur="isInputFocused = false, currentIndex = 0" @input="updateFilteredIngredients" ref="ingInput" />
-                <router-link to="/"
-                    class="px-5 py-3 text-white bg-primary rounded-md text-lg duration-300 hover:bg-secondary">Search</router-link>
+                <button @click="handleSearch"
+                    class="px-5 py-3 text-white bg-primary rounded-md text-lg duration-300 hover:bg-secondary">Search</button>
             </div>
             <transition name="result">
                 <div v-show="isInputFocused || selectedIngredients.length"
@@ -28,7 +28,7 @@
                         <div v-for="ingredient in selectedIngredients" :key="ingredient"
                             @click="selectedIngredients = selectedIngredients.filter(item => item !== ingredient)"
                             class="text-white cursor-pointer bg-primary relative px-3 py-1 rounded-md">
-                            <span>{{ ingredient }}</span>
+                            <span>{{ capitalizeFirstLetter(ingredient) }}</span>
                             <span class="absolute -right-2 -top-2">
                                 <svgClose />
                             </span>
@@ -44,7 +44,7 @@
                         Loading...</div> -->
                     <div v-for="ingredient in filteredIngredients" :key="ingredient"
                         class="px-4 py-2 text-lg min-h-[2.5rem] text-slate-700 duration-300 hover:bg-neutral-300 cursor-pointer"
-                        @click="!selectedIngredients.includes(ingredient) && selectedIngredients.push(ingredient), ingInput.focus()"
+                        @click="!selectedIngredients.includes(ingredient) && selectedIngredients.push(ingredient.toLowerCase()), ingInput.focus()"
                         :class="(filteredIngredients.indexOf(ingredient) === currentIndex - 1) && 'bg-neutral-300'">
                         {{ ingredient }}
                     </div>
@@ -58,15 +58,20 @@
 import axios from 'axios';
 import svgClose from './icons/close.vue'
 import { ref } from "vue";
+import { useRouter } from 'vue-router'
 
 const searchQuery = ref("");
 const isInputFocused = ref(false);
 const currentIndex = ref(0)
 const selectedIngredients = ref([])
 const ingInput = ref(null)
+const router = useRouter()
 
 const ingredients = ref([])
 
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 const filteredIngredients = ref([])
 const ingrdientTaverse = (e) => {
     const container = document.getElementById('ingredientContainer')
@@ -99,6 +104,20 @@ const fetchAllIngredients = async () => {
         console.log(err);
     })
 }
+
+const findRecipeBasedOnIngredients = (ingredientList) => {
+    const formattedRecipes = encodeURIComponent(ingredientList.join('-'));
+    const route = `recipes/${formattedRecipes}`;
+    router.push(route)
+}
+
+const handleSearch = () => {
+    if (selectedIngredients.value.length === 0) {
+        return;
+    }
+    findRecipeBasedOnIngredients(selectedIngredients.value)
+}
+
 fetchAllIngredients();
 </script>
 <style scoped>
