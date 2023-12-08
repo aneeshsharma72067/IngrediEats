@@ -1,12 +1,12 @@
 <template>
     <div class="flex flex-col gap-4 relative">
         <transition name="fade">
-            <div v-if="isLoading" class="mx-auto mt-10 w-full text-center absolute text-4xl font-semibold">
+            <div v-if="isLoading" class="mx-auto mt-10 w-full text-center absolute ">
                 <div class="loader">
                     <Loader />
                 </div>
             </div>
-            <transition v-else>
+            <template v-else>
                 <div v-if="recipes.length"
                     class="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 duration-500 lg:grid-cols-4 gap-7 ">
                     <template v-for="recipe in recipes" :key="recipe.id">
@@ -16,7 +16,7 @@
                 <div v-else>
                     <p>No Recipes Available</p>
                 </div>
-            </transition>
+            </template>
         </transition>
     </div>
 </template>
